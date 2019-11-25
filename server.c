@@ -63,9 +63,14 @@ int main(int argc, char **argv)
             printf("Error reading of client message\n");
             return -1;
         }
-        //buf[sizeOfMessage] = '\0';
 
         printf("Client say >> %s", buf);
+
+        if(send(clientSock, buf, sizeof(buf), 0) == -1)
+        {
+            printf("Error send message from client\n");
+            return 1;
+        }
         
     }
 

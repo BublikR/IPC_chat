@@ -44,8 +44,19 @@ int main(int argc, char **argv)
     {
         printf(">> ");
         fgets(buf, BUF_LEN, stdin);
-        send(sock, buf, BUF_LEN, 0);
-        sleep(1);
+        if(send(sock, buf, BUF_LEN, 0) == -1)
+        {
+            printf("Error send message from server\n");
+            return 1;
+        }
+
+        if(recv(sock, buf, sizeof(buf), 0) <= 0)
+        {
+            printf("Error reading of server message\n");
+            return 1;
+        }
+
+        printf("Server say: %s", buf);
     }
 
     return 0;
