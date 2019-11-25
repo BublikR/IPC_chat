@@ -57,11 +57,20 @@ int main(int argc, char **argv)
     // Communication with the client in the loop
     while(1)
     {
-        int sizeOfMessage = recv(clientSock, buf, sizeof(buf), 0);
-        if(sizeOfMessage <= 0)
+        if(recv(clientSock, buf, sizeof(buf), 0) <= 0)
         {
             printf("Error reading of client message\n");
-            return -1;
+            clientSock = accept(listenSock, (struct sockaddr*) &clientAddr, &clientAddrLen);
+            if(clientSock == -1)
+            {
+                printf("Error accept\n");
+                return 1;
+            }
+            if(recv(clientSock, buf, sizeof(buf), 0) <= 0)
+            {
+                printf("Error reading of client message\n");
+                return 1;
+            }
         }
 
         printf("Client say >> %s", buf);
