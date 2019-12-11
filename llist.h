@@ -1,5 +1,3 @@
-#include <sys/socket.h>
-//#include <netinet/in.h>
 #include <malloc.h>
 
 struct LNode
@@ -11,3 +9,4 @@ struct LNode
 
 struct LNode *pushLNode(struct LNode *head, int socket, char *name);
 int delLNode(struct LNode *head, char *name);
+void clearAllLNodes(struct LNode *head);

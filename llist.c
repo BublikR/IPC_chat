@@ -37,3 +37,15 @@ int delLNode(struct LNode *head, char *name)
     }
     return -1;
 }
+
+void clearAllLNodes(struct LNode *head)
+{
+    struct LNode *node = NULL;
+    while(head->next != NULL)
+    {
+        node = head;
+        head = head->next;
+        free(node);
+    }
+    free(head);
+}
