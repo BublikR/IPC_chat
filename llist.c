@@ -18,3 +18,22 @@ struct LNode *pushLNode(struct LNode *head, int socket, char *name)
         head->next = new_node;
         return head;
 }
+
+int delLNode(struct LNode *head, char *name)
+{
+    struct LNode *previous = NULL;
+
+    while(head->next != NULL)
+    {
+        previous = head;
+        head = head->next;
+
+        if(head->name == name)
+        {
+            previous->next = head->next;
+            free(head);
+            return 0;
+        }
+    }
+    return -1;
+}

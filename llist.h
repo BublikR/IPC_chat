@@ -10,3 +10,4 @@ struct LNode
 };
 
 struct LNode *pushLNode(struct LNode *head, int socket, char *name);
+int delLNode(struct LNode *head, char *name);
