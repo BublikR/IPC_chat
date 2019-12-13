@@ -1,5 +1,7 @@
 #include "llist.h"
 
+// Ceate a linked list head or new node.
+// Set the first parameter "NULL", if you create the head.
 struct LNode *pushLNode(struct LNode *head, int socket, char *name)
 {
     struct LNode *new_node = (struct LNode*) malloc(sizeof(struct LNode));
@@ -19,6 +21,7 @@ struct LNode *pushLNode(struct LNode *head, int socket, char *name)
         return head;
 }
 
+// Delete one node by name
 int delLNode(struct LNode *head, char *name)
 {
     struct LNode *previous = NULL;
@@ -38,6 +41,7 @@ int delLNode(struct LNode *head, char *name)
     return -1;
 }
 
+// Clear all list
 void clearAllLNodes(struct LNode *head)
 {
     struct LNode *node = NULL;
