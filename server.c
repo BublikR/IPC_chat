@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "llist.h"
 
 #define BUF_LEN 1024
 
@@ -24,6 +25,10 @@ int main(int argc, char **argv)
     // Created a main server socket
     int listenSock = socket(AF_INET, SOCK_STREAM, 0);
     
+    // Created a linked list head. Save the sokets information in it.
+    // Store the main server socket information in the linked list head.
+    struct LNode* head = pushLNode(NULL, listenSock, "SERVER");
+        
     serverSockAddr.sin_family = AF_INET;
     serverSockAddr.sin_port = htons(port);
     serverSockAddr.sin_addr.s_addr = INADDR_ANY;
