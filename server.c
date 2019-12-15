@@ -100,10 +100,11 @@ int main(int argc, char **argv)
                     printf("Error reading of client %s message\n", client->name);
                     return 6;
                 }
-                else if(client_recv == 0)
+                else if(client_recv == 0) // Client exit
                 {
                     printf("Client %s left the chat\n", client->name);
-                    delLNode(head, client->name);
+                    close(client->socket); // Close this client socket
+                    delLNode(head, client->name); // Delete client
                 }
                 else
                     printf("Client %s say >> %s", client->name, buf);
