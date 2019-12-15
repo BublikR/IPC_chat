@@ -39,14 +39,14 @@ int main(int argc, char **argv)
     if(bind(listenSock, (struct sockaddr*) &serverSockAddr, sizeof(serverSockAddr)) != 0)
     {
         printf("Error bind\n");
-        return 1;
+        return 2;
     }
 
     // Listening to the server port
     if(listen(listenSock, 5) != 0)
     {
         printf("Error listen\n");
-        return 1;
+        return 3;
     }
     printf("Server listen ...\n");
 
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
         if(select(max_d+1, &readfds, NULL, NULL, NULL) < 1)
         {
             printf("Error select\n");
-            return 1;
+            return 4;
         }
         
         // Received a new connection request
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
             if(clientSock == -1)
             {
                 printf("Error accept\n");
-                return 1;
+                return 5;
             }
             // Save new client descriptor
             sprintf(name, "%d", clientSock);
@@ -94,13 +94,20 @@ int main(int argc, char **argv)
             client = client->next;
             if(FD_ISSET(client->socket, &readfds))
             {
-                if(recv(client->socket, buf, sizeof(buf), 0) <= 0)
+                int client_recv = recv(client->socket, buf, sizeof(buf), 0);
+                if(client_recv == -1)
                 {
                     printf("Error reading of client %s message\n", client->name);
-                    return 1;
+                    return 6;
                 }
-                printf("Client %s say >> %s", client->name, buf);
-                
+                else if(client_recv == 0)
+                {
+                    printf("Client %s left the chat\n", client->name);
+                    delLNode(head, client->name);
+                }
+                else
+                    printf("Client %s say >> %s", client->name, buf);
+
                 struct LNode *recipient = head;
                 while(recipient->next)
                 {
@@ -108,7 +115,7 @@ int main(int argc, char **argv)
                     if(send(recipient->socket, buf, sizeof(buf), 0) == -1)
                     {
                         printf("Error send message from client %s\n", recipient->name);
-                        return 1;
+                        return 7;
                     }
                 }
             }
